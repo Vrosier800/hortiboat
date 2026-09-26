@@ -1,0 +1,16 @@
+# Symfony
+backend/vendor/
+backend/var/
+backend/.env.local
+backend/.env.*.local
+
+# Next.js
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+front/.env*.local
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

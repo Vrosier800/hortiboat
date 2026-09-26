@@ -1,0 +1,49 @@
+services:
+  database:
+    image: postgres:16
+    container_name: hortiboat_db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: hortiboat
+      POSTGRES_USER: hortiboat
+      POSTGRES_PASSWORD: hortiboat
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/database
+
+  backend:
+    build:
+      context: ./backend
+    container_name: hortiboat_backend
+    working_dir: /app
+    volumes:
+      - ./backend:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - database
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: hortiboat_frontend
+    working_dir: /app
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - WATCHPACK_POLLING=true
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: hortiboat_mailpit
+    restart: unless-stopped
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres_data:

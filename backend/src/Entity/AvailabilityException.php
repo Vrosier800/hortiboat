@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\AvailabilityExeptionRepository;
+use App\Repository\AvailabilityExceptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AvailabilityExeptionRepository::class)]
-class AvailabilityExeption
+#[ORM\Entity(repositoryClass: AvailabilityExceptionRepository::class)]
+class AvailabilityException
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

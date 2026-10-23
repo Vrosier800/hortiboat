@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Dto\AvailabilityExeption;
+namespace App\Dto\AvailabilityException;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class AvailabilityExeptionInput {
+final class AvailabilityExceptionInput {
 
     #[Assert\NotNull]
     public \DateTimeImmutable $startAt;
@@ -13,6 +13,7 @@ final class AvailabilityExeptionInput {
     public \DateTimeImmutable $endAt;
 
     #[Assert\Choice(choices: ['OPEN', 'CLOSED'])]
+    public string $type;
 
     #[Assert\Length(max: 255)]
     public ?string $reason =null;

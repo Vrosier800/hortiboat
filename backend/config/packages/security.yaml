@@ -16,6 +16,21 @@ security:
             # Ensure dev tools and static assets are always allowed
             pattern: ^/(_profiler|_wdt|assets|build)/
             security: false
+        login:
+            pattern: ^/api/login
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                check_path: /api/login_check
+                username_path: email
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api: 
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            jwt: ~
         main:
             lazy: true
             provider: app_user_provider
@@ -28,8 +43,22 @@ security:
 
     # Note: Only the *first* matching rule is applied
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        # Authentification / inscription publiques
+        - { path: ^/api/login_check$, roles: PUBLIC_ACCESS }
+        - { path: ^/api/register$, roles: PUBLIC_ACCESS }
+
+        # Catalogue visible sans compte
+        - { path: ^/api/activities, roles: PUBLIC_ACCESS, methods: [GET] }
+        - { path: ^/api/formulas, roles: PUBLIC_ACCESS, methods: [GET] }
+
+        # Administration
+        - { path: ^/api/activities, roles: ROLE_ADMIN }
+        - { path: ^/api/formulas, roles: ROLE_ADMIN }
+        - { path: ^/api/opening-rules, roles: ROLE_ADMIN }
+        - { path: ^/api/availability-exceptions, roles: ROLE_ADMIN }
+
+        # Tout le reste de l'API nécessite un compte
+        - { path: ^/api, roles: ROLE_USER }
 
 when@test:
     security:
